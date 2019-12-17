@@ -25,7 +25,7 @@ CPUZ=(FALSE "Processor info" "lscpu" "Display detailed info on CPU")
 
 OS=(FALSE "32/64 bit OS" "uname -a" "Find out is this 32 or 64 bit OS")
 
-inxi_full=(FALSE "Full info" "inxi -zv8" "View system info")
+inxi_full=(FALSE "Full info" "inxi -Fxxxza --no-host" "View system info")
 
 inxi_df=(FALSE "Partition info" "inxi -plu" "View partition info")
 
@@ -154,7 +154,7 @@ function_OS(){
 }
 
 function_inxi_full(){
-   inxi -zv8 -c 0 | tee /tmp/inxifull | yad --center --title="Full info (inxi -zv8)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
+   inxi -Fxxxza --no-host -c 0 | tee /tmp/inxifull | yad --center --title="Full info (inxi -Fxxxza --no-host)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/inxifull)
       zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="Full_info.txt" --title="Save Full Computer info")")
