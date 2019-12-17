@@ -43,6 +43,8 @@ OPENGL=(FALSE "View OpenGL configuration" "glxinfo | grep OpenGL" "View OpenGL c
 
 LSB=(FALSE "View lsb release" "lsb_release -dic" "View lsb release info")
 
+MHWD=(FAlse "View installed driver configs" "mhwd -li"  "View installed driver configs")
+
 function_disk_df(){
    SOME_TEXT="df - View file system disk space usage\nYou can select the mount to open in the file manager"
    SOME_TITLE="df"
@@ -66,7 +68,7 @@ function_disk_df(){
 }
 
 function_FDISK(){
-   gksu --message 'To run this tool your password is required. Enter your password (user password), or press Cancel.' 'sudo fdisk -l' | tee /tmp/fdiskinfo| yad --center --title="Partition Tables (sudo fdisk -l)" --text-info --width=800 --height=600 --button Save:0 --button Cancel:1
+   gksu 'sudo fdisk -l' | tee /tmp/fdiskinfo| yad --center --title="Partition Tables (sudo fdisk -l)" --text-info --width=800 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/fdiskinfo)
       zSavePath=$(echo -n "$(yad --center --file-selection --save --confirm-overwrite --filename="Partition_Tables.txt" --title="Save List of the Partition Tables")")
@@ -238,10 +240,20 @@ function_LSB(){
    lsb_release -dic| tee /tmp/lsbinfo | yad --center --title="View lsb release (lsb_release -dic)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/lsbinfo)
-      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="Network_conf.txt" --title="Save ls_ release Info")")
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="ls_release.txt" --title="Save ls_ release Info")")
       echo -n "$zNewData" > "$zSavePath"
    fi
       rm /tmp/lsbinfo
+}
+
+function_MHWD(){
+   mhwd -li| tee /tmp/mhwdinfo | yad --center --title="View installed driver configs (mhwd -li)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
+   if [ "${PIPESTATUS[2]}" -ne "1" ]; then
+      zNewData=$(cat /tmp/mhwdinfo)
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="mhwd.txt" --title="Save mhwd Info")")
+      echo -n "$zNewData" > "$zSavePath"
+   fi
+      rm /tmp/mhwdinfo
 }
 
 function_nothing(){
@@ -284,7 +296,8 @@ while [ $redraw_main_window == "1" ]; do
     "${NETWORK[@]}" \
     "${NETWORKC[@]}" \
     "${OPENGL[@]}" \
-    "${LSB[@]}" )
+    "${LSB[@]}" \
+    "${MHWD[@]}" )
 
   if [ "$?" -eq 0 ];
     then
@@ -394,6 +407,11 @@ while [ $redraw_main_window == "1" ]; do
                          ;;
 
               ${LSB[1]}) function_LSB
+                         selection=''
+                         redraw_main_window="1"
+                         ;;
+
+              ${MHWD[1]}) function_MHWD
                          selection=''
                          redraw_main_window="1"
                          ;;
