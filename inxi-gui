@@ -41,7 +41,7 @@ NETWORKC=(FALSE "Network Configuration" "ip addr show" "View network  configurat
 
 OPENGL=(FALSE "View OpenGL configuration" "glxinfo | grep OpenGL" "View OpenGL configuration on this system")
 
-LSB=(FALSE "View lsb release" "lsb_release -dic" "View lsb release info")
+LSB=(FALSE "View lsb release" "lsb_release -idrc" "View lsb release info")
 
 MHWD=(FAlse "View installed driver configs" "mhwd -li -d"  "View installed driver configs")
 
@@ -237,7 +237,7 @@ function_OPENGL(){
 }
 
 function_LSB(){
-   lsb_release -dic| tee /tmp/lsbinfo | yad --center --title="View lsb release (lsb_release -dic)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
+   lsb_release -idrc| tee /tmp/lsbinfo | yad --center --title="View lsb release (lsb_release -idrc)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/lsbinfo)
       zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="ls_release.txt" --title="Save ls_ release Info")")
