@@ -66,7 +66,7 @@ function_disk_df(){
 }
 
 function_FDISK(){
-   gksu --message 'To run this tool your password is required. Enter your password (user password), or press Cancel.' 'sudo fdisk -l' | tee /tmp/fdiskinfo| yad --center --title="Partition Tables (sudo fdisk -l)" --text-info --width=800 --height=600 --button gtk-save:0 --button gtk-cancel:1
+   gksu --message 'To run this tool your password is required. Enter your password (user password), or press Cancel.' 'sudo fdisk -l' | tee /tmp/fdiskinfo| yad --center --title="Partition Tables (sudo fdisk -l)" --text-info --width=800 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/fdiskinfo)
       zSavePath=$(echo -n "$(yad --center --file-selection --save --confirm-overwrite --filename="Partition_Tables.txt" --title="Save List of the Partition Tables")")
@@ -76,50 +76,50 @@ function_FDISK(){
 }
 
 function_BLOCKDEV(){
-   lsblk  |tee /tmp/lsblkinfo | yad --center --title="Block Devices (lsblk)" --text-info --width=800 --height=600 --button gtk-save:0 --button gtk-cancel:1
+   lsblk  |tee /tmp/lsblkinfo | yad --center --title="Block Devices (lsblk)" --text-info --width=800 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/lsblkinfo)
-      zSavePath=$(echo -n "$(yad --center --file-selection --save --button gtk-save:0 --button gtk-cancel:1 --confirm-overwrite --filename="Block_Devices.txt" --title="Save Block Devices info")")
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="Block_Devices.txt" --title="Save Block Devices info")")
       echo -n "$zNewData" > "$zSavePath"
    fi
       rm /tmp/lsblkinfo
 }
 
 function_PARTED(){
-   gksu --message 'To run this tool your password is required. Enter your password (user password), or press Cancel.' 'sudo parted -l'|tee /tmp/partedinfo | yad --center --title="Partition Layout (sudo parted -l)" --text-info --width=800 --height=600 --button gtk-save:0 --button gtk-cancel:1
+   gksu --message 'To run this tool your password is required. Enter your password (user password), or press Cancel.' 'sudo parted -l'|tee /tmp/partedinfo | yad --center --title="Partition Layout (sudo parted -l)" --text-info --width=800 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/partedinfo)
-      zSavePath=$(echo -n "$(yad --center --file-selection --save --button gtk-save:0 --button gtk-cancel:1 --confirm-overwrite --filename="Partition_layout.txt" --title="Save Partition Layout info")")
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="Partition_layout.txt" --title="Save Partition Layout info")")
       echo -n "$zNewData" > "$zSavePath"
    fi
       rm /tmp/partedinfo
 }
 
 function_lspci_info(){
-   lspci -vnn | tee /tmp/lspciinfo | yad --center --title="PCI info (lspci -vnn)" --text-info --width=800 --height=600 --button gtk-save:0 --button gtk-cancel:1
+   lspci -vnn | tee /tmp/lspciinfo | yad --center --title="PCI info (lspci -vnn)" --text-info --width=800 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/lspciinfo)
-      zSavePath=$(echo -n "$(yad --center --file-selection --save --button gtk-save:0 --button gtk-cancel:1 --confirm-overwrite --filename="PCI_Devices.txt" --title="Save PCI Devices info")")
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="PCI_Devices.txt" --title="Save PCI Devices info")")
       echo -n "$zNewData" > "$zSavePath"
    fi
       rm /tmp/lspciinfo
 }
 
 function_lspci_graph(){
-   lspci -vnn | grep VGA -A 12 | tee /tmp/lspcigraph| yad --center --title="Graphics (lspci -vnn | grep VGA -A 12)" --text-info --width=800 --height=600 --button gtk-save:0 --button gtk-cancel:1
+   lspci -vnn | grep VGA -A 12 | tee /tmp/lspcigraph| yad --center --title="Graphics (lspci -vnn | grep VGA -A 12)" --text-info --width=800 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[3]}" -ne "1" ]; then
       zNewData=$(cat /tmp/lspcigraph)
-      zSavePath=$(echo -n "$(yad --center --file-selection --save --button gtk-save:0 --button gtk-cancel:1 --confirm-overwrite --filename="Graphics_info.txt" --title="Save Graphics info")")
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="Graphics_info.txt" --title="Save Graphics info")")
       echo -n "$zNewData" > "$zSavePath"
    fi
       rm /tmp/lspcigraph
 }
 
 function_lsusb_info(){
-   lsusb | tee /tmp/lsusbinfo | yad --center --title="USB info (lsusb)" --text-info --width=800 --height=400 --button gtk-save:0 --button gtk-cancel:1
+   lsusb | tee /tmp/lsusbinfo | yad --center --title="USB info (lsusb)" --text-info --width=800 --height=400 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/lsusbinfo)
-      zSavePath=$(echo -n "$(yad --center --file-selection --save --button gtk-save:0 --button gtk-cancel:1 --confirm-overwrite --filename="USB_info.txt" --title="Save USB info")")
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="USB_info.txt" --title="Save USB info")")
       echo -n "$zNewData" > "$zSavePath"
    fi
       rm /tmp/lsusbinfo
@@ -135,10 +135,10 @@ function_CPU(){
 }
 
 function_CPUZ(){
-   lscpu | tee /tmp/processorinfo | yad --center --title="Processor info (lscpu)" --text-info --width=850 --height=600 --button gtk-save:0 --button gtk-cancel:1
+   lscpu | tee /tmp/processorinfo | yad --center --title="Processor info (lscpu)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/processorinfo)
-      zSavePath=$(echo -n "$(yad --center --file-selection --save --button gtk-save:0 --button gtk-cancel:1 --confirm-overwrite --filename="CPU_info.txt" --title="Save Processor info")")
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="CPU_info.txt" --title="Save Processor info")")
       echo -n "$zNewData" > "$zSavePath"
    fi
       rm /tmp/processorinfo
@@ -154,10 +154,10 @@ function_OS(){
 }
 
 function_inxi_full(){
-   inxi -zv8 -c 0 | tee /tmp/inxifull | yad --center --title="Full info (inxi -zv8)" --text-info --width=850 --height=600 --button gtk-save:0 --button gtk-cancel:1
+   inxi -zv8 -c 0 | tee /tmp/inxifull | yad --center --title="Full info (inxi -zv8)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/inxifull)
-      zSavePath=$(echo -n "$(yad --center --file-selection --save --button gtk-save:0 --button gtk-cancel:1 --confirm-overwrite --filename="Full_info.txt" --title="Save Full Computer info")")
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="Full_info.txt" --title="Save Full Computer info")")
       echo -n "$zNewData" > "$zSavePath"
 
    fi
@@ -165,80 +165,80 @@ function_inxi_full(){
 }
 
 function_inxi_df(){
-   inxi -plu -c 0 | tee /tmp/partitionsinfo| yad --center --title="Partition info (inxi -plu)" --text-info --width=650 --height=400 --button gtk-save:0 --button gtk-cancel:1
+   inxi -plu -c 0 | tee /tmp/partitionsinfo| yad --center --title="Partition info (inxi -plu)" --text-info --width=650 --height=400 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/partitionsinfo)
-      zSavePath=$(echo -n "$(yad --center --file-selection --save --button gtk-save:0 --button gtk-cancel:1 --confirm-overwrite --filename="Partition_info.txt" --title="Save Partition info")")
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="Partition_info.txt" --title="Save Partition info")")
       echo -n "$zNewData" > "$zSavePath"
    fi
       rm /tmp/partitionsinfo
 }
 
 function_REPOS(){
-   inxi -r -c 0 | tee /tmp/repositorieslist | yad --center --title="Repositories (inxi -r)" --text-info --width=850 --height=600 --button gtk-save:0 --button gtk-cancel:1
+   inxi -r -c 0 | tee /tmp/repositorieslist | yad --center --title="Repositories (inxi -r)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/repositorieslist)
-      zSavePath=$(echo -n "$(yad --center --file-selection --save --button gtk-save:0 --button gtk-cancel:1 --confirm-overwrite --filename="Repositories.txt" --title="Save List Of The Repositories")")
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="Repositories.txt" --title="Save List Of The Repositories")")
       echo -n "$zNewData" > "$zSavePath"
    fi
       rm /tmp/repositorieslist
 }
 
 function_GRAPHICS(){
-   inxi -Gxx -c 0 | tee /tmp/graphicsinfo | yad --center --title="Graphics info (inxi -Gxx)" --text-info --width=850 --height=600 --button gtk-save:0 --button gtk-cancel:1
+   inxi -Gxx -c 0 | tee /tmp/graphicsinfo | yad --center --title="Graphics info (inxi -Gxx)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/graphicsinfo)
-      zSavePath=$(echo -n "$(yad --center --file-selection --save --button gtk-save:0 --button gtk-cancel:1 --confirm-overwrite --filename="Graphics_inxi.txt" --title="Save Graphic information (inxi)")")
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="Graphics_inxi.txt" --title="Save Graphic information (inxi)")")
       echo -n "$zNewData" > "$zSavePath"
    fi
       rm /tmp/graphicsinfo
 }
 
 function_AUDIO(){
-   inxi -A -c 0 | tee /tmp/audioinfo | yad --center --title="Audio info (inxi -A)" --text-info --width=850 --height=600 --button gtk-save:0 --button gtk-cancel:1
+   inxi -A -c 0 | tee /tmp/audioinfo | yad --center --title="Audio info (inxi -A)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/audioinfo)
-      zSavePath=$(echo -n "$(yad --center --file-selection --save --button gtk-save:0 --button gtk-cancel:1 --confirm-overwrite --filename="Audio_info.txt" --title="Save Audio information (inxi)")")
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="Audio_info.txt" --title="Save Audio information (inxi)")")
       echo -n "$zNewData" > "$zSavePath"
    fi
       rm /tmp/audioinfo
 }
 
 function_NETWORK(){
-   inxi -nz -c 0 | tee /tmp/networkinfo | yad --center --title="Network info (inxi -nz)" --text-info --width=850 --height=600 --button gtk-save:0 --button gtk-cancel:1
+   inxi -nz -c 0 | tee /tmp/networkinfo | yad --center --title="Network info (inxi -nz)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/networkinfo)
-      zSavePath=$(echo -n "$(yad --center --file-selection --save --button gtk-save:0 --button gtk-cancel:1 --confirm-overwrite --filename="Network_inxi.txt" --title="Save Network information (inxi)")")
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="Network_inxi.txt" --title="Save Network information (inxi)")")
       echo -n "$zNewData" > "$zSavePath"
    fi
       rm /tmp/networkinfo
 }
 
 function_NETWORKC(){
-   /sbin/ifconfig -a | tee /tmp/networkconfinfo | yad --center --title="Network info (ifconfig -a)" --text-info --width=850 --height=600 --button gtk-save:0 --button gtk-cancel:1
+   /sbin/ifconfig -a | tee /tmp/networkconfinfo | yad --center --title="Network info (ifconfig -a)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/networkconfinfo)
-      zSavePath=$(echo -n "$(yad --center --file-selection --save --button gtk-save:0 --button gtk-cancel:1 --confirm-overwrite --filename="Network_conf.txt" --title="Save Network Configuration Info")")
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="Network_conf.txt" --title="Save Network Configuration Info")")
       echo -n "$zNewData" > "$zSavePath"
    fi
       rm /tmp/networkconfinfo
 }
 
 function_OPENGL(){
-   glxinfo | grep OpenGL | tee /tmp/openglinfo | yad --center --title="View OpenGL configuration (glxinfo | grep OpenGL)" --text-info --width=850 --height=600 --button gtk-save:0 --button gtk-cancel:1
+   glxinfo | grep OpenGL | tee /tmp/openglinfo | yad --center --title="View OpenGL configuration (glxinfo | grep OpenGL)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[3]}" -ne "1" ]; then
       zNewData=$(cat /tmp/openglinfo)
-      zSavePath=$(echo -n "$(yad --center --file-selection --save --button gtk-save:0 --button gtk-cancel:1 --confirm-overwrite --filename="OpenGL_info.txt" --title="Save OpenGL Info")")
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="OpenGL_info.txt" --title="Save OpenGL Info")")
       echo -n "$zNewData" > "$zSavePath"
    fi
       rm /tmp/openglinfo
 }
 
 function_LSB(){
-   lsb_release -dic| tee /tmp/lsbinfo | yad --center --title="View lsb release (lsb_release -dic)" --text-info --width=850 --height=600 --button gtk-save:0 --button gtk-cancel:1
+   lsb_release -dic| tee /tmp/lsbinfo | yad --center --title="View lsb release (lsb_release -dic)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/lsbinfo)
-      zSavePath=$(echo -n "$(yad --center --file-selection --save --button gtk-save:0 --button gtk-cancel:1 --confirm-overwrite --filename="Network_conf.txt" --title="Save ls_ release Info")")
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="Network_conf.txt" --title="Save ls_ release Info")")
       echo -n "$zNewData" > "$zSavePath"
    fi
       rm /tmp/lsbinfo
