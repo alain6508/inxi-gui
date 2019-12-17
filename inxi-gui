@@ -15,7 +15,7 @@ PARTED=(FALSE "List Partition Layout" "sudo parted -l" "List partition layout on
 
 lspci_info=(FALSE "PCI info" "lspci -vnn" "View PCI devices info")
 
-lspci_graph=(FALSE "Graphics" "lspci -vnn | grep VGA -A 12" "View graphics devices info")
+lspci_graph=(FALSE "Graphics" "lspci -vnn | grep -i 'VGA\|3D\|Display' -A 12" "View graphics devices info")
 
 lsusb_info=(FALSE "USB info" "lsusb" "View usb devices info")
 
@@ -106,7 +106,7 @@ function_lspci_info(){
 }
 
 function_lspci_graph(){
-   lspci -vnn | grep VGA -A 12 | tee /tmp/lspcigraph| yad --center --title="Graphics (lspci -vnn | grep VGA -A 12)" --text-info --width=800 --height=600 --button Save:0 --button Cancel:1
+   lspci -vnn | grep VGA -A 12 | tee /tmp/lspcigraph| yad --center --title="Graphics (lspci -vnn | grep -i 'VGA\|3D\|Display' -A 12)" --text-info --width=800 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[3]}" -ne "1" ]; then
       zNewData=$(cat /tmp/lspcigraph)
       zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="Graphics_info.txt" --title="Save Graphics info")")
