@@ -10,7 +10,7 @@ if [ -z "$(which inxi)"  ]; then
 
    if yad --center --title="Question" --question text="Inxi is not installed, do you want to install it?\nIf you choose No program will exit."
    then
-      gksudo "sudo apt-get install inxi -y" | yad --center --progress --title="Installing inxi" --text="please wait" --pulsate --auto-close
+      gksu "sudo apt-get install inxi -y" | yad --center --progress --title="Installing inxi" --text="please wait" --pulsate --auto-close
             if [ "${PIPESTATUS[0]}" -ne "0" ]; then
                yad --center --error --title="Error" --text="inxi could not be installed."
                exit
@@ -81,11 +81,11 @@ function_disk_df(){
 }
 
 function_FDISK(){
-   gksudo --message 'To run this tool your password is required. Enter your password (user password), or press Cancel.' 'sudo fdisk -l' | tee /tmp/fdiskinfo| yad --center --title="Partition Tables (sudo fdisk -l)" --text-info --width=800 --height=600 --button gtk-save:0 --button gtk-cancel:1
+   gksu --message 'To run this tool your password is required. Enter your password (user password), or press Cancel.' 'sudo fdisk -l' | tee /tmp/fdiskinfo| yad --center --title="Partition Tables (sudo fdisk -l)" --text-info --width=800 --height=600 --button gtk-save:0 --button gtk-cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/fdiskinfo)
       zSavePath=$(echo -n "$(yad --center --file-selection --save --confirm-overwrite --filename="Partition_Tables.txt" --title="Save List of the Partition Tables")")
-      echo -n "$zNewData" > "$zSavePath"      
+      echo -n "$zNewData" > "$zSavePath"
    fi
       rm /tmp/fdiskinfo
 }
@@ -101,7 +101,7 @@ function_BLOCKDEV(){
 }
 
 function_PARTED(){
-   gksudo --message 'To run this tool your password is required. Enter your password (user password), or press Cancel.' 'sudo parted -l'|tee /tmp/partedinfo | yad --center --title="Partition Layout (sudo parted -l)" --text-info --width=800 --height=600 --button gtk-save:0 --button gtk-cancel:1
+   gksu --message 'To run this tool your password is required. Enter your password (user password), or press Cancel.' 'sudo parted -l'|tee /tmp/partedinfo | yad --center --title="Partition Layout (sudo parted -l)" --text-info --width=800 --height=600 --button gtk-save:0 --button gtk-cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/partedinfo)
       zSavePath=$(echo -n "$(yad --center --file-selection --save --button gtk-save:0 --button gtk-cancel:1 --confirm-overwrite --filename="Partition_layout.txt" --title="Save Partition Layout info")")
@@ -174,7 +174,7 @@ function_inxi_full(){
       zNewData=$(cat /tmp/inxifull)
       zSavePath=$(echo -n "$(yad --center --file-selection --save --button gtk-save:0 --button gtk-cancel:1 --confirm-overwrite --filename="Full_info.txt" --title="Save Full Computer info")")
       echo -n "$zNewData" > "$zSavePath"
-   
+
    fi
       rm /tmp/inxifull
 }
@@ -311,20 +311,20 @@ while [ $redraw_main_window == "1" ]; do
       fi
     else
       exit 0
-  fi 
+  fi
 
   while [ "${selection[@]}" != "" ] ; do
 
     case $(cut -f2 -d'|' <<<"${selection[@]}") in
 
           ${disk_df[1]}) function_disk_df
-                         selection='' 
+                         selection=''
                          redraw_main_window="1"
                          ;;
 
             ${FDISK[1]}) function_FDISK
                          selection=''
-                         redraw_main_window="1" 
+                         redraw_main_window="1"
                          ;;
 
          ${BLOCKDEV[1]}) function_BLOCKDEV
@@ -360,7 +360,7 @@ while [ $redraw_main_window == "1" ]; do
              ${CPUZ[1]}) function_CPUZ
                          selection=''
                          redraw_main_window="1"
-                         ;; 
+                         ;;
 
                ${OS[1]}) function_OS
                          selection=''
@@ -381,7 +381,7 @@ while [ $redraw_main_window == "1" ]; do
                          selection=''
                          redraw_main_window="1"
                          ;;
- 
+
          ${GRAPHICS[1]}) function_GRAPHICS
                          selection=''
                          redraw_main_window="1"
