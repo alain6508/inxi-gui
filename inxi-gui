@@ -43,7 +43,9 @@ OPENGL=(FALSE "View OpenGL configuration" "glxinfo | grep OpenGL" "View OpenGL c
 
 LSB=(FALSE "View lsb release" "lsb_release -idrc" "View lsb release info")
 
-MHWD=(FAlse "View installed driver configs" "mhwd -li -d"  "View installed driver configs")
+MHWD_LI=(FAlse "Manjaro HardWare Detection: list installed" "mhwd -li -d"  "View installed driver configs")
+
+MHWD_LH=(FAlse "Manjaro HardWare Detection: list hardware" "mhwd -lh -d"  "View hardware information")
 
 function_disk_df(){
    SOME_TEXT="df - View file system disk space usage\nYou can select the mount to open in the file manager"
@@ -246,14 +248,24 @@ function_LSB(){
       rm /tmp/lsbinfo
 }
 
-function_MHWD(){
-   mhwd -li -d| tee /tmp/mhwdinfo | yad --center --title="View installed driver configs (mhwd -li -d)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
+function_MHWD_LI(){
+   mhwd -li -d| tee /tmp/mhwdliinfo | yad --center --title="Manjaro HardWare Detection: list installed (mhwd -li -d)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
-      zNewData=$(cat /tmp/mhwdinfo)
-      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="mhwd.txt" --title="Save mhwd Info")")
+      zNewData=$(cat /tmp/mhwdliinfo)
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="mhwdli.txt" --title="Save mhwdli Info")")
       echo -n "$zNewData" > "$zSavePath"
    fi
-      rm /tmp/mhwdinfo
+      rm /tmp/mhwdliinfo
+}
+
+function_MHWD_LH(){
+   mhwd -lh -d| tee /tmp/mhwdlhinfo | yad --center --title="Manjaro HardWare Detection: list hardware (mhwd -lh -d)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
+   if [ "${PIPESTATUS[2]}" -ne "1" ]; then
+      zNewData=$(cat /tmp/mhwdlhinfo)
+      zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="mhwdlh.txt" --title="Save mhwdlh Info")")
+      echo -n "$zNewData" > "$zSavePath"
+   fi
+      rm /tmp/mhwdlhinfo
 }
 
 function_nothing(){
@@ -297,7 +309,8 @@ while [ $redraw_main_window == "1" ]; do
     "${NETWORKC[@]}" \
     "${OPENGL[@]}" \
     "${LSB[@]}" \
-    "${MHWD[@]}" )
+    "${MHWD_LI[@]}" \
+    "${MHWD_LH[@]}" )
 
   if [ "$?" -eq 0 ];
     then
@@ -411,7 +424,12 @@ while [ $redraw_main_window == "1" ]; do
                          redraw_main_window="1"
                          ;;
 
-              ${MHWD[1]}) function_MHWD
+              ${MHWD_LI[1]}) function_MHWD_LI
+                         selection=''
+                         redraw_main_window="1"
+                         ;;
+
+              ${MHWD_LH[1]}) function_MHWD_LH
                          selection=''
                          redraw_main_window="1"
                          ;;
