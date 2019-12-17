@@ -5,21 +5,6 @@
 # modified by kmathern to use yad
 #--------------------------------------------------------------------------------------------------------
 
-#inxi installed?
-if [ -z "$(which inxi)"  ]; then
-
-   if yad --center --title="Question" --question text="Inxi is not installed, do you want to install it?\nIf you choose No program will exit."
-   then
-      gksu "sudo apt-get install inxi -y" | yad --center --progress --title="Installing inxi" --text="please wait" --pulsate --auto-close
-            if [ "${PIPESTATUS[0]}" -ne "0" ]; then
-               yad --center --error --title="Error" --text="inxi could not be installed."
-               exit
-            fi
-   else
-      exit
-   fi
-fi
-
 disk_df=(FALSE "Fs disk space info" "df -Th | grep /dev/sd" "View filesystem disk space usage")
 
 FDISK=(FALSE "List Partition Tables" "sudo fdisk -l" "List out the partition information (password required)")
