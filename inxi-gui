@@ -245,7 +245,7 @@ function_LSB(){
 }
 
 function_nothing(){
-   yad --center --info --width=200 --height=50 --title='Info' --text='Nothing was selected.' --button gtk-clear:0
+   yad --center --info --width=200 --height=50 --title='Info' --text='Nothing was selected.' --button OK:0
 }
 
 redraw_main_window="1"
