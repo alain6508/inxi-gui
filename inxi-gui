@@ -5,7 +5,7 @@
 # modified by kmathern to use yad
 #--------------------------------------------------------------------------------------------------------
 
-disk_df=(FALSE "Fs disk space info" "df -Th | grep /dev/sd" "View filesystem disk space usage")
+disk_df=(FALSE "Fs disk space info" "df -Th | grep '^/dev/'" "View filesystem disk space usage")
 
 FDISK=(FALSE "List Partition Tables" "sudo fdisk -l" "List out the partition information (password required)")
 
@@ -49,7 +49,7 @@ function_disk_df(){
 
    df -h -T| tail -n+2 | while read fs type size used rest target; do
       if [[ $rest ]] ; then
-         echo "$fs" "$type" "$size"B "$used"B "$rest"B "${target[@]}" |  grep /dev/sd | # remove "grep /dev/sd |" to show all
+         echo "$fs" "$type" "$size"B "$used"B "$rest"B "${target[@]}" |  grep '^/dev/' | # remove "grep /dev/sd |" to show all
          awk '{print $1,"\n",$2,"\n",$3,"\n",$4,"\n",$5,"\n",$6}BEGIN{ s = 7; e = 35; }{for (i=s; i<=e; i++) printf("%s%s", $(i), i<e ? OFS : "\n"); }' #Workaround for disk labels that contain whitespaces(number of characters that can be divided by whitespace =e-s)
       fi
    #done | sed -e 's/[ \t]*$//' $1|yad --center --list --width=685 --height=350 --title="${SOME_TITLE}" --text="${SOME_TEXT}" --column="Device" --column="Type" --column="Size" --column="Used" --column="Free" --column="%Used" --column="Mount" --print-column="7"| cut -d '|' -f1| tee /tmp/tempdf
