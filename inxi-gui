@@ -256,8 +256,8 @@ while [ $redraw_main_window == "1" ]; do
   --width=900 \
   --height=700 \
   --text="Select the info tool you wish to use, then click the OK button." \
-  --title="inxi GUI" \
-  --window-icon="messagebox_info" \
+  --title="PC Information" \
+  --window-icon="computer" \
   --button OK:0 \
   --button Exit:1 \
   --list \
