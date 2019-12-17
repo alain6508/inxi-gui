@@ -43,7 +43,7 @@ OPENGL=(FALSE "View OpenGL configuration" "glxinfo | grep OpenGL" "View OpenGL c
 
 LSB=(FALSE "View lsb release" "lsb_release -dic" "View lsb release info")
 
-MHWD=(FAlse "View installed driver configs" "mhwd -li"  "View installed driver configs")
+MHWD=(FAlse "View installed driver configs" "mhwd -li -d"  "View installed driver configs")
 
 function_disk_df(){
    SOME_TEXT="df - View file system disk space usage\nYou can select the mount to open in the file manager"
@@ -247,7 +247,7 @@ function_LSB(){
 }
 
 function_MHWD(){
-   mhwd -li| tee /tmp/mhwdinfo | yad --center --title="View installed driver configs (mhwd -li)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
+   mhwd -li -d| tee /tmp/mhwdinfo | yad --center --title="View installed driver configs (mhwd -li -d)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/mhwdinfo)
       zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="mhwd.txt" --title="Save mhwd Info")")
