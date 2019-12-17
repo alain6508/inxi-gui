@@ -37,7 +37,7 @@ AUDIO=(FALSE "View Audio" "inxi -A" "View audio on this system")
 
 NETWORK=(FALSE "View Network" "inxi -nz" "View network on this system")
 
-NETWORKC=(FALSE "Network Configuration" "ifconfig -a" "View network  configuration on this system")
+NETWORKC=(FALSE "Network Configuration" "ip addr show" "View network  configuration on this system")
 
 OPENGL=(FALSE "View OpenGL configuration" "glxinfo | grep OpenGL" "View OpenGL configuration on this system")
 
@@ -215,7 +215,7 @@ function_NETWORK(){
 }
 
 function_NETWORKC(){
-   /sbin/ifconfig -a | tee /tmp/networkconfinfo | yad --center --title="Network info (ifconfig -a)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
+   /sbin/ip addr show | tee /tmp/networkconfinfo | yad --center --title="Network info (ip addr show)" --text-info --width=850 --height=600 --button Save:0 --button Cancel:1
    if [ "${PIPESTATUS[2]}" -ne "1" ]; then
       zNewData=$(cat /tmp/networkconfinfo)
       zSavePath=$(echo -n "$(yad --center --file-selection --save --button Save:0 --button Cancel:1 --confirm-overwrite --filename="Network_conf.txt" --title="Save Network Configuration Info")")
